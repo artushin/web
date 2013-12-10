@@ -1,0 +1,15 @@
+{{set . "title" "Profile"}}
+{{template "header.html" .}}
+  <div class="container">
+    <div class="jumbotron">
+
+      {{if .profile}}
+      <h1>Hi, {{ .profile.Name }}</h1>
+      {{end}}
+    </div>
+    <div class="footer">
+      <p>&copy; ribrakrakrakrak 2013</p>
+    </div>
+  </div> <!-- /container -->
+
+{{template "footer.html" .}}
