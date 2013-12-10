@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	"code.google.com/p/goauth2/oauth"
 	"github.com/artushin/web.dev/app/oauth2"
 	"github.com/robfig/revel"
 )
@@ -10,33 +10,24 @@ type Application struct {
 	*revel.Controller
 }
 
+func init() {
+	revel.InterceptFunc(checkUser, revel.BEFORE, &Application{})
+}
+
 func checkUser(c *revel.Controller) revel.Result {
-	if user := 1; user != 0 {
-		c.Flash.Error("Please log in first")
-		return c.Redirect(Application.Index)
+	t, err := oauth2.TransportFromCache(c.Session.Id())
+	if err != nil {
+		return c.Redirect(Login.Login)
 	}
+	c.Args["transport"] = t
 	return nil
 }
 
-func (c Application) Index() revel.Result {
-	return c.Render()
-}
-
-func (c Application) EnterDemo() revel.Result {
-	return c.Redirect(oauth2.GoogleOauthCfg.AuthCodeURL(""))
-}
-
-func (c Application) OAuth(code string) revel.Result {
-	t, err := oauth2.Transport(code)
+func (c Application) Profile() revel.Result {
+	profile, err := oauth2.GetAccount(c.Args["transport"].(*oauth.Transport))
 	if err != nil {
-		return c.Redirect(Application.Index)
+		return c.Redirect(Login.Login)
 	}
 
-	profile, err := oauth2.GetAccount(t)
-	if err != nil {
-		return c.Redirect(Application.Index)
-	}
-
-	fmt.Println("Hi, ", profile.GivenName)
-	return c.Redirect(Application.Index)
+	return c.Render(profile)
 }

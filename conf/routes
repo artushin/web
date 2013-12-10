@@ -5,9 +5,10 @@
 module:testrunner
 
 # Login
-GET     /                                       Application.Index
-GET     /demo                                   Application.EnterDemo
-GET     /oauth2callback                         Application.OAuth
+GET     /                                       Login.Login
+GET     /enter                                  Login.Enter
+GET     /oauth2callback                         Login.OAuth
+GET     /profile                         		Application.Profile
 
 # WebSocket demo
 GET     /websocket/room                         WebSocket.Room
