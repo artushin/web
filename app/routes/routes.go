@@ -4,6 +4,43 @@ package routes
 import "github.com/robfig/revel"
 
 
+type tWebSocket struct {}
+var WebSocket tWebSocket
+
+
+func (_ tWebSocket) Room(
+		user string,
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "user", user)
+	return revel.MainRouter.Reverse("WebSocket.Room", args).Url
+}
+
+func (_ tWebSocket) RoomSocket(
+		user string,
+		ws interface{},
+		) string {
+	args := make(map[string]string)
+	
+	revel.Unbind(args, "user", user)
+	revel.Unbind(args, "ws", ws)
+	return revel.MainRouter.Reverse("WebSocket.RoomSocket", args).Url
+}
+
+
+type tApplication struct {}
+var Application tApplication
+
+
+func (_ tApplication) Profile(
+		) string {
+	args := make(map[string]string)
+	
+	return revel.MainRouter.Reverse("Application.Profile", args).Url
+}
+
+
 type tLogin struct {}
 var Login tLogin
 
@@ -29,43 +66,6 @@ func (_ tLogin) OAuth(
 	
 	revel.Unbind(args, "code", code)
 	return revel.MainRouter.Reverse("Login.OAuth", args).Url
-}
-
-
-type tApplication struct {}
-var Application tApplication
-
-
-func (_ tApplication) Profile(
-		) string {
-	args := make(map[string]string)
-	
-	return revel.MainRouter.Reverse("Application.Profile", args).Url
-}
-
-
-type tWebSocket struct {}
-var WebSocket tWebSocket
-
-
-func (_ tWebSocket) Room(
-		user string,
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "user", user)
-	return revel.MainRouter.Reverse("WebSocket.Room", args).Url
-}
-
-func (_ tWebSocket) RoomSocket(
-		user string,
-		ws interface{},
-		) string {
-	args := make(map[string]string)
-	
-	revel.Unbind(args, "user", user)
-	revel.Unbind(args, "ws", ws)
-	return revel.MainRouter.Reverse("WebSocket.RoomSocket", args).Url
 }
 
 

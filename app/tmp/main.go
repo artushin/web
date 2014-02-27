@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"github.com/robfig/revel"
 	websocket "code.google.com/p/go.net/websocket"
-	_ "github.com/artushin/web.dev/app/chatroom"
-	controllers "github.com/artushin/web.dev/app/controllers"
+	_ "github.com/artushin/web/app/chatroom"
+	controllers "github.com/artushin/web/app/controllers"
 	controllers0 "github.com/robfig/revel/modules/static/app/controllers"
 	_ "github.com/robfig/revel/modules/testrunner/app"
 	controllers1 "github.com/robfig/revel/modules/testrunner/app/controllers"
@@ -27,6 +27,46 @@ func main() {
 	flag.Parse()
 	revel.Init(*runMode, *importPath, *srcPath)
 	revel.INFO.Println("Running revel server")
+	
+	revel.RegisterController((*controllers.WebSocket)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Room",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+					18: []string{ 
+						"user",
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "RoomSocket",
+				Args: []*revel.MethodArg{ 
+					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
+					&revel.MethodArg{Name: "ws", Type: reflect.TypeOf((**websocket.Conn)(nil)) },
+				},
+				RenderArgNames: map[int][]string{ 
+				},
+			},
+			
+		})
+	
+	revel.RegisterController((*controllers.Application)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Profile",
+				Args: []*revel.MethodArg{ 
+				},
+				RenderArgNames: map[int][]string{ 
+					32: []string{ 
+						"profile",
+					},
+				},
+			},
+			
+		})
 	
 	revel.RegisterController((*controllers.Login)(nil),
 		[]*revel.MethodType{
@@ -50,46 +90,6 @@ func main() {
 				Name: "OAuth",
 				Args: []*revel.MethodArg{ 
 					&revel.MethodArg{Name: "code", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.Application)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Profile",
-				Args: []*revel.MethodArg{ 
-				},
-				RenderArgNames: map[int][]string{ 
-					32: []string{ 
-						"profile",
-					},
-				},
-			},
-			
-		})
-	
-	revel.RegisterController((*controllers.WebSocket)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Room",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
-				},
-				RenderArgNames: map[int][]string{ 
-					18: []string{ 
-						"user",
-					},
-				},
-			},
-			&revel.MethodType{
-				Name: "RoomSocket",
-				Args: []*revel.MethodArg{ 
-					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*string)(nil)) },
-					&revel.MethodArg{Name: "ws", Type: reflect.TypeOf((**websocket.Conn)(nil)) },
 				},
 				RenderArgNames: map[int][]string{ 
 				},

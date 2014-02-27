@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"code.google.com/p/goauth2/oauth"
-	"github.com/artushin/web.dev/app/oauth2"
+	"github.com/artushin/web/app/oauth2"
 	"github.com/robfig/revel"
 )
 

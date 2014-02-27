@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/artushin/web.dev/app/oauth2"
+	"github.com/artushin/web/app/oauth2"
 	"github.com/robfig/revel"
 )
 
